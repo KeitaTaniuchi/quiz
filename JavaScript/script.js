@@ -1,16 +1,28 @@
 "use strict";
 
-const h1 = document.getElementById('h1');
+const title = document.getElementById('title');
+const category = document.getElementById('category');
+const difficulty = document.getElementById('difficulty');
 const p = document.getElementById('p');
-const quizStartBtn = document.getElementById('quiz-start-btn')
+const answersContainer = document.getElementById('answers-container');
 
-class quizList {
-    constructor()
+const answersBtn = document.createElement('button')
+
+
+class quizElem {
+    constructor(quizDataArr, index) {
+        this.index = index + 1;
+        this.category = quizDataArr[index].category;
+        this.difficulty = quizDataArr[index].difficulty;
+        this.question = quizDataArr[index].question;
+        this.correct_answer = quizDataArr[index].correct_answer;
+        this.incorrect_answers = quizDataArr[index].incorrect_answers;
+    }
 }
 
 //開始ボタンを押した時の処理
-quizStartBtn.addEventListener('click', () => {
-    quizStartBtn.style.display = 'none';
+startBtn.addEventListener('click', () => {
+    startBtn.style.display = 'none';
     fetchQuizData();
 });
 
@@ -22,28 +34,44 @@ const fetchQuizData = async () => {
     const quizData = await response.json();
 
     const quizDataArr = await quizData.results;
-    createQuiz(quizDataArr);
+    let index = 0;
+    console.log(quizDataArr)
+    createQuiz(quizDataArr, index);
 }
 
 //クイズデータ作成中の画面表示を行う処理
 const displayInAcquisition = () => {
-    h1.innerHTML = "取得中";
-    p.innerHTML = "少々お待ちください"
+    title.innerHTML = "取得中";
+    p.innerHTM
 }
 
-const createQuiz = (quizDataArr) => {
-    const quizAnswersContainer = document.getElementById('quiz-answers-container');
-    const createUl = document.createElement('ul');
-    const createLi = document.createElement('li');
 
-    Object.keys(quizDataArr).forEach((currentValue) => {
-        const quizNumber = currentValue;
-        const quizElem = quizDataArr[currentValue];
-        console.log(quizNumber);
-        console.log(quizElem);
+const createQuiz = (quizDataArr, index) => {
+    if (index !== quizDataArr.length) {
+        //console.log(quizDataArr)
+        const quizDataInstance = new quizElem(quizDataArr, index);
 
-        quizAnswersContainer.appendChild(createUl);
-        quizAnswersContainer.appendChild(createLi);
-    });
+        title.innerHTML = `問題${quizDataInstance.index}`;
+        category.innerHTML = `[ジャンル]${quizDataInstance.category}`;
+        difficulty.innerHTML = `[難易度]${quizDataInstance.difficulty}`;
+        p.innerHTML = quizDataInstance.question;
+        createNextBtn(index);
+
+       
+
+        
+
+        console.log(quizDataArr[index].category)
+
+        /* console.log(quizDataInstance.quizNumber)
+        console.log(quizDataInstance.quizCategory)
+        console.log(quizDataInstance.quizDifficulty)
+        console.log(quizDataInstance.quizQuestion) */
+    }
+
+}
+
+
+const createNextBtn = (index) => {
 
 }
