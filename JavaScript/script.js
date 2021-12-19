@@ -63,12 +63,17 @@ const removeChild = () => {
 
 //webAPIからクイズデータを取ってくる処理
 const fetchQuizData = async () => {
-    const response = await fetch("https://opentdb.com/api.php?amount=10");
+    try {
+        const response = await fetch("https://opentdb.com/api.php?amount=10");
 
-    const quizData = await response.json();
-    const quizNumber = 0;
-    const quizInstance = new quiz(quizData, quizNumber);
-    questionsCount(quizInstance, quizNumber);
+        const quizData = await response.json();
+        const quizNumber = 0;
+        const quizInstance = new quiz(quizData, quizNumber);
+        questionsCount(quizInstance, quizNumber);
+
+    } catch (error) {
+        alert('エラーが発生しました。')
+    }
 }
 
 //クイズの出題数を判定する処理
