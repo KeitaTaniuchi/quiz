@@ -3,7 +3,7 @@
 const title = document.getElementById('title');
 const category = document.getElementById('category');
 const difficulty = document.getElementById('difficulty');
-const questionAndInformation = document.getElementById('question-and-information');
+const questionOrInformation = document.getElementById('question-or-information');
 const buttonsContainer = document.getElementById('btn-container');
 const startBtn = document.getElementById('start-btn');
 
@@ -49,7 +49,7 @@ class quiz {
 //開始ボタンを押した時の処理
 startBtn.addEventListener('click', () => {
     title.innerHTML = "取得中";
-    questionAndInformation.innerHTM = "少々お待ちください。";
+    questionOrInformation.innerHTM = "少々お待ちください。";
     removeChild();
     fetchQuizData();
 })
@@ -71,9 +71,22 @@ const fetchQuizData = async () => {
         const quizInstance = new quiz(quizData, quizNumber);
         questionsCount(quizInstance, quizNumber);
 
-    } catch (error) {
-        alert('エラーが発生しました。')
+    } catch {
+        errorDisplay();
     }
+}
+
+//通信エラー時の画面表示の処理
+const errorDisplay = () => {
+    title.innerHTML = "通信エラー";
+    questionOrInformation.innerHTML = "画面をリロードするか、以下のボタンを押してください。";
+
+    const reloadBtn = document.createElement('button');
+    reloadBtn.innerHTML = "リロードする";
+    buttonsContainer.appendChild(reloadBtn);
+    reloadBtn.addEventListener("click", () => {
+        location.reload();
+    })
 }
 
 //クイズの出題数を判定する処理
@@ -93,7 +106,7 @@ const createQuiz = (quizInstance, quizNumber) => {
     title.innerHTML = `問題${quizNumber + 1}`;
     category.innerHTML = `[ジャンル]${quizInstance.category(quizNumber)}`;
     difficulty.innerHTML = `[難易度]${quizInstance.difficulty(quizNumber)}`;
-    questionAndInformation.innerHTML = quizInstance.question(quizNumber);
+    questionOrInformation.innerHTML = quizInstance.question(quizNumber);
 
     const answers = answersRandom(quizInstance, quizNumber);
     answers.forEach((currentValue) => {
@@ -125,7 +138,7 @@ const resultDisplay = (quizInstance) => {
     title.innerHTML = `あなたの正答数は,${quizInstance.correctAnswerCount}です。`;
     category.innerHTML = "";
     difficulty.innerHTML = "";
-    questionAndInformation.innerHTML = "再度チャレンジしたい場合は、以下をクリックしてください。";
+    questionOrInformation.innerHTML = "再度チャレンジしたい場合は、以下をクリックしてください。";
 
     const retryBtn = document.createElement('button');
     retryBtn.innerHTML = "再度挑戦する";
