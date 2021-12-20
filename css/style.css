@@ -1,0 +1,14 @@
+#question-and-information {
+    padding: 10px 0 10px 0;
+    border-top: 1.5px solid gray;
+    border-bottom: 1.5px solid gray;
+}
+
+#btn-container {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+button {
+    margin: 5px 0 5px 0;
+}
